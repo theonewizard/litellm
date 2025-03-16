@@ -12,6 +12,9 @@ services:
       DATABASE_URL: "postgresql://llmproxy:dbpassword9090@db:5432/litellm"
       STORE_MODEL_IN_DB: "True" # allows adding models to proxy via UI
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY} # Load the master key from the environment
+      UI_USERNAME: ${UI_USERNAME} # Load the UI username from the environment
+      UI_PASSWORD: ${UI_PASSWORD} # Load the UI password from the environment
+      PROXY_ADMIN_ID: ${PROXY_ADMIN_ID} # Load the proxy username from the environment
     depends_on:
       - db  # Indicates that this service depends on the 'db' service, ensuring 'db' starts first
     healthcheck:  # Defines the health check configuration for the container
