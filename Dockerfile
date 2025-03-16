@@ -56,7 +56,7 @@ USER root
 
 # Install runtime dependencies
 RUN apk update && \
-    apk add --no-cache openssl
+    apk add --no-cache openssl curl
 
 WORKDIR /app
 # Copy the current directory contents into the container at /app
