@@ -5,15 +5,13 @@ services:
       context: .
       args:
         target: runtime
-    image: ghcr.io/berriai/litellm:main-v1.63.7-nightly
+    image: ghcr.io/berriai/litellm:latest
     ports:
       - "4000:4000" # Map the container port to the host, change the host port if necessary
     environment:
       DATABASE_URL: "postgresql://llmproxy:dbpassword9090@db:5432/litellm"
       STORE_MODEL_IN_DB: "True" # allows adding models to proxy via UI
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY} # Load the master key from the environment
-    # env_file:
-    #  - .env # Load local .env file
     depends_on:
       - db  # Indicates that this service depends on the 'db' service, ensuring 'db' starts first
     healthcheck:  # Defines the health check configuration for the container
