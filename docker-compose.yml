@@ -23,6 +23,11 @@ services:
       timeout: 10s   # Health check command times out after 10 seconds
       retries: 3     # Retry up to 3 times if health check fails
       start_period: 40s  # Wait 40 seconds after container start before beginning health checks
+    networks:
+      macvlan_network:
+        ipv4_address: 172.16.44.9
+      default:
+
 
   db:
     image: postgres:16
@@ -59,3 +64,8 @@ volumes:
     driver: local
   postgres_data:
     name: litellm_postgres_data  # Named volume for Postgres data persistence
+
+networks:
+  macvlan_network:
+    name: 'macvlan_network'
+    external: true
