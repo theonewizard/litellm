@@ -12,7 +12,8 @@ WORKDIR /app
 USER root
 
 # Install build dependencies
-RUN apk add --no-cache gcc python3-dev openssl openssl-dev
+RUN apk update && \
+    apk add --no-cache gcc python3-dev openssl openssl-dev
 
 
 RUN pip install --upgrade pip && \
@@ -36,6 +37,9 @@ RUN pip install dist/*.whl
 # install dependencies as wheels
 RUN pip wheel --no-cache-dir --wheel-dir=/wheels/ -r requirements.txt
 
+# install semantic-cache [Experimental]- we need this here and not in requirements.txt because redisvl pins to pydantic 1.0 
+RUN pip install redisvl==0.0.7 --no-deps
+
 # ensure pyjwt is used, not jwt
 RUN pip uninstall jwt -y
 RUN pip uninstall PyJWT -y
@@ -51,7 +55,8 @@ FROM $LITELLM_RUNTIME_IMAGE AS runtime
 USER root
 
 # Install runtime dependencies
-RUN apk add --no-cache openssl tzdata
+RUN apk update && \
+    apk add --no-cache openssl curl
 
 WORKDIR /app
 # Copy the current directory contents into the container at /app
@@ -74,5 +79,5 @@ EXPOSE 4000/tcp
 
 ENTRYPOINT ["docker/prod_entrypoint.sh"]
 
-# Append "--detailed_debug" to the end of CMD to view detailed debug logs
+# Append "--detailed_debug" to the end of CMD to view detailed debug logs 
 CMD ["--port", "4000"]
